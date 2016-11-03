@@ -4,9 +4,12 @@ import java.net.URL
 
 import org.apache.james.gatling.utils.RandomStringGenerator
 import play.api.libs.ws.ning.NingWSClient
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
+import play.api.libs.ws.ahc.AhcWSClient
 
 case class Domain(value: String)
 case class Username(value: String)
@@ -30,7 +33,9 @@ object Password {
 }
 
 class JamesWebAdministration(val baseUrl: URL) {
-  val wsClient = NingWSClient()
+  implicit val system=ActorSystem("ws")
+  implicit val materializer = ActorMaterializer()
+  val wsClient = AhcWSClient()
 
   def addDomain(domain: Domain): Future[Domain] = wsClient.url(s"$baseUrl/domains/${domain.value}")
     .put("")
