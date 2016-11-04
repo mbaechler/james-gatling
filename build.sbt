@@ -17,3 +17,5 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.0" % "test"
 libraryDependencies += "com.typesafe.akka" %% "akka-testkit" % "2.4.11" % "test"
 
 resolvers += Resolver.mavenLocal
+
+cancelable in Global := true

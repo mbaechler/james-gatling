@@ -30,7 +30,7 @@ class LoginHandlerSpec extends WordSpec with BeforeAndAfterAll with Matchers {
         probe.send(handler, LoginHandler.Login("userId1", "user1", "password"))
       }
       probe.expectMsgPF(1.minute) {
-        case s: Seq[IMAPResponse] => s.exists(_.isOK) shouldBe true
+        case LoginHandler.LoggedIn(responses,_) => responses.exists(_.isOK) shouldBe true
       }
     }
   }

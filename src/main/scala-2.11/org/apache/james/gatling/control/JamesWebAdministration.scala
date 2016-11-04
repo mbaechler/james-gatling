@@ -3,7 +3,6 @@ package org.apache.james.gatling.control
 import java.net.URL
 
 import org.apache.james.gatling.utils.RandomStringGenerator
-import play.api.libs.ws.ning.NingWSClient
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 

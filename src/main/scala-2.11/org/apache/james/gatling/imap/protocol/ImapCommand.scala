@@ -1,5 +1,5 @@
 package org.apache.james.gatling.imap.protocol
 
-trait IMAPCommand {
+trait ImapCommand {
   def userId:String
 }
