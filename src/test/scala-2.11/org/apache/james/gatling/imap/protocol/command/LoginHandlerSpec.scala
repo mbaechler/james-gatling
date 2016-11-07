@@ -61,24 +61,34 @@ class LoginHandlerSpec extends WordSpec with BeforeAndAfterAll with Matchers {
 
 
   val config = new Properties()
-  val uri = new URI("imap://10.69.0.155:143")
+  val uri = new URI("imap://10.69.0.110:143")
   val imapClient = new IMAPClient(4)
 
   def withConnectedSession(f: IMAPSession => Unit) = {
     val connectionListener = new IMAPConnectionListener {
-      override def onConnect(session: IMAPSession): Unit =
-        f(session)
+      override def onConnect(session: IMAPSession): Unit = {
+        println("onConnect " + session)
 
-      override def onMessage(session: IMAPSession, response: IMAPResponse): Unit = ???
+        f(session)
+      }
+
+      override def onMessage(session: IMAPSession, response: IMAPResponse): Unit = {
+        println("onMessage " + response)
+      }
 
       override def onDisconnect(session: IMAPSession, cause: Throwable): Unit =
         logger.error("disconnected", cause)
 
-      override def onInactivityTimeout(session: IMAPSession): Unit = ???
+      override def onInactivityTimeout(session: IMAPSession): Unit = {
+        println("onInactivityTimeout " + session)
+      }
 
-      override def onResponse(session: IMAPSession, tag: String, responses: util.List[IMAPResponse]): Unit = ???
+      override def onResponse(session: IMAPSession, tag: String, responses: util.List[IMAPResponse]): Unit = {
+        println("onResponse " + responses)
+      }
     }
     val session = imapClient.createSession(uri, config, connectionListener, new LogManager(Logger.Level.DEBUG, LogPage.DEFAULT_SIZE))
+    println(uri)
     session.connect()
   }
 

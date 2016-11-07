@@ -16,7 +16,7 @@ class ImapAuthenticationScenario extends Simulation {
     .exec(imap("Connect").connect()).exitHereIfFailed
     .exec(imap("login").login("${username}","${password}"))
 
-  setUp(scn.inject(constantUsersPerSec(1000).during(60.seconds))).protocols(imap.host("192.168.1.13"))
+  setUp(scn.inject(constantUsersPerSec(1).during(2.seconds))).protocols(imap.host("10.69.0.110"))
 }
 object Engine extends App{
   // This sets the class for the simulation we want to run.

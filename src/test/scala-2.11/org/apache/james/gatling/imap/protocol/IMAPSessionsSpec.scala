@@ -18,7 +18,7 @@ class IMAPSessionsSpec extends WordSpec with Matchers with BeforeAndAfterAll{
   "the imap sessions actor" should {
     "log a user in" in {
       val config=new Properties()
-      val protocol = ImapProtocol("192.168.1.13", config=config)
+      val protocol = ImapProtocol("10.69.0.110", config=config)
 
       val sessions = system.actorOf(IMAPSessions.props(protocol))
       val probe = TestProbe()
