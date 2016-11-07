@@ -8,7 +8,6 @@ enablePlugins(GatlingPlugin)
 
 EclipseKeys.withSource := true
 
-libraryDependencies += "com.typesafe.play" %% "play-ws" % "2.5.9" exclude("org.asynchttpclient", "async-http-client")
 libraryDependencies += "io.gatling" % "gatling-test-framework" % "2.2.2" exclude("io.gatling", "gatling-http")
 libraryDependencies += "io.gatling.highcharts" % "gatling-charts-highcharts" % "2.2.2" exclude("io.gatling", "gatling-http")
 libraryDependencies += "org.apache.commons" % "commons-email" % "1.4"
