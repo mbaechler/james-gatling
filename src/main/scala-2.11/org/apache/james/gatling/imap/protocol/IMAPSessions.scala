@@ -11,6 +11,7 @@ import com.lafaspot.logfast.logging.{LogManager, Logger}
 import com.sun.mail.imap.protocol.IMAPResponse
 import io.gatling.core.akka.BaseActor
 import org.apache.james.gatling.imap.protocol.IMAPSessions.{Disconnect, Disconnected}
+import org.apache.james.gatling.imap.protocol.ImapCommand.{Login, Select}
 import org.apache.james.gatling.imap.protocol.command.{LoginHandler, SelectHandler}
 
 import scala.collection.immutable.Seq
@@ -111,11 +112,11 @@ private class IMAPSession(client: IMAPClient, protocol: ImapProtocol) extends Ba
   }
 
   def connected: Receive = {
-    case cmd@LoginHandler.Login(_, _, _) =>
+    case cmd@Login(_, _, _) =>
       val tag = f"A$tagCounter%06d"
       val handler = context.actorOf(LoginHandler.props(session, tag), "login")
       handler forward cmd
-    case cmd@SelectHandler.Select(_, _) =>
+    case cmd@Select(_, _) =>
       val tag = f"A$tagCounter%06d"
       val handler = context.actorOf(SelectHandler.props(session, tag), "select")
       handler forward cmd

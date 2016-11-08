@@ -9,6 +9,7 @@ import io.gatling.core.action.{Action, ValidatedActionActor}
 import io.gatling.core.session._
 import io.gatling.core.stats.StatsEngine
 import io.gatling.core.stats.message.ResponseTimings
+import org.apache.james.gatling.imap.protocol.ImapCommand.Select
 import org.apache.james.gatling.imap.protocol.ImapProtocol
 import org.apache.james.gatling.imap.protocol.command.SelectHandler
 
@@ -22,7 +23,7 @@ class SelectAction(protocol: ImapProtocol, sessions: ActorRef, requestName: Stri
   def handleSelected(session: Session, start: Long) =
     context.actorOf(Props( new Actor {
     override def receive: Receive = {
-      case SelectHandler.Selected(response: Seq[IMAPResponse], _) =>
+      case SelectHandler.Selected(response: Seq[IMAPResponse]) =>
         logger.trace("SelectAction#Selected on SelectHandler.Selected")
         response.find(_.isOK).fold(noOkResponse(session, start))(onOkResponse(session, start))
       case e: Exception =>
@@ -51,7 +52,7 @@ class SelectAction(protocol: ImapProtocol, sessions: ActorRef, requestName: Stri
       } yield {
         val id: Long = session.userId
         val handler =handleSelected(session, nowMillis)
-        sessions.tell(SelectHandler.Select(id.toString, mailbox),handler)
+        sessions.tell(Select(id.toString, mailbox),handler)
       }
   }
 }

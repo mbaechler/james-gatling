@@ -9,6 +9,7 @@ import io.gatling.core.action.{Action, ValidatedActionActor}
 import io.gatling.core.session._
 import io.gatling.core.stats.StatsEngine
 import io.gatling.core.stats.message.ResponseTimings
+import org.apache.james.gatling.imap.protocol.ImapCommand.Login
 import org.apache.james.gatling.imap.protocol.ImapProtocol
 import org.apache.james.gatling.imap.protocol.command.LoginHandler
 
@@ -22,7 +23,7 @@ class LoginAction(protocol: ImapProtocol, sessions: ActorRef, requestName: Strin
   def handleLoggedIn(session: Session, start: Long) =
     context.actorOf(Props( new Actor {
     override def receive: Receive = {
-      case LoginHandler.LoggedIn(response: Seq[IMAPResponse], _) =>
+      case LoginHandler.LoggedIn(response: Seq[IMAPResponse]) =>
         logger.trace("LoginAction#handleLoggedIn on LoginHandler.LoggedIn")
         response.find(_.isOK).fold(noOkResponse(session, start))(onOkResponse(session, start))
       case e: Exception =>
@@ -52,7 +53,7 @@ class LoginAction(protocol: ImapProtocol, sessions: ActorRef, requestName: Strin
       } yield {
         val id: Long = session.userId
         val handler =handleLoggedIn(session, nowMillis)
-        sessions.tell(LoginHandler.Login(id.toString, user, pass),handler)
+        sessions.tell(Login(id.toString, user, pass),handler)
       }
   }
 }
