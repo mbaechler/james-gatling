@@ -26,3 +26,5 @@ libraryDependencies += "com.sun.mail" % "javax.mail" % "1.6.2"
 libraryDependencies += "javax.activation" % "activation" % "1.1.1"
 libraryDependencies += "org.bouncycastle" % "bcpkix-jdk15on" % "1.60" % Optional
 libraryDependencies += "org.bouncycastle" % "bcmail-jdk15on" % "1.60" % Optional
+
+libraryDependencies += "org.testcontainers" % "testcontainers" % "1.11.0" % "it"
